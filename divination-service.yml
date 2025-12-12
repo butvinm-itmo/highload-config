@@ -12,6 +12,9 @@ spring:
           enabled: true
   flyway:
     table: flyway_schema_history_divination
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:tarot_db}
+    user: ${DB_USER:tarot_user}
+    password: ${DB_PASSWORD:password}
   r2dbc:
     url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:tarot_db}
     username: ${DB_USER:tarot_user}
