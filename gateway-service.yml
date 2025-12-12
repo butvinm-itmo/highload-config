@@ -1,0 +1,100 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v0.0.1/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: user-service
+        - id: tarot-service-cards
+          uri: lb://tarot-service
+          predicates:
+            - Path=/api/v0.0.1/cards/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: tarot-service
+        - id: tarot-service-layouts
+          uri: lb://tarot-service
+          predicates:
+            - Path=/api/v0.0.1/layout-types/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: tarot-service
+        - id: divination-service
+          uri: lb://divination-service
+          predicates:
+            - Path=/api/v0.0.1/spreads/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: divination-service
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URL}
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 5
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+    instance-id: ${spring.application.name}:${random.value}
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+    instances:
+      user-service:
+        baseConfig: default
+      tarot-service:
+        baseConfig: default
+      divination-service:
+        baseConfig: default
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s
+        cancelRunningFuture: true
+    instances:
+      user-service:
+        baseConfig: default
+      tarot-service:
+        baseConfig: default
+      divination-service:
+        baseConfig: default
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway,circuitbreakers
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
