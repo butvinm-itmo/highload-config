@@ -5,6 +5,19 @@ spring:
   flyway:
     table: flyway_schema_history_user
 
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:changeThisToAVeryLongSecretKeyForProductionUseAtLeast256BitsLong!!}
+  expiration-hours: 24
+
+# Password validation configuration
+password:
+  min-length: 8
+  require-uppercase: true
+  require-lowercase: true
+  require-digit: true
+  require-special: true
+
 eureka:
   client:
     enabled: true
