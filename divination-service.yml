@@ -23,6 +23,8 @@ spring:
       initial-size: 5
       max-size: 20
       max-idle-time: 30m
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
 eureka:
   client:

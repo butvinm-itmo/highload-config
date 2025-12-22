@@ -57,6 +57,14 @@ spring:
             - name: CircuitBreaker
               args:
                 name: divination-service
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v0.0.1/notifications/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: notification-service
 
 eureka:
   client:
@@ -91,6 +99,8 @@ resilience4j:
         baseConfig: default
       divination-service:
         baseConfig: default
+      notification-service:
+        baseConfig: default
 
   timelimiter:
     configs:
@@ -103,6 +113,8 @@ resilience4j:
       tarot-service:
         baseConfig: default
       divination-service:
+        baseConfig: default
+      notification-service:
         baseConfig: default
 
 management:
