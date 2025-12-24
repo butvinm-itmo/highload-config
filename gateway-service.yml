@@ -57,6 +57,10 @@ spring:
             - name: CircuitBreaker
               args:
                 name: divination-service
+        - id: notification-service-ws
+          uri: lb:ws://notification-service
+          predicates:
+            - Path=/api/v0.0.1/notifications/ws
         - id: notification-service
           uri: lb://notification-service
           predicates:
