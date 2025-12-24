@@ -16,59 +16,61 @@ spring:
     compatibility-verifier:
       enabled: false
     gateway:
-      routes:
-        - id: user-service-auth
-          uri: lb://user-service
-          predicates:
-            - Path=/api/v0.0.1/auth/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: user-service
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/api/v0.0.1/users/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: user-service
-        - id: tarot-service-cards
-          uri: lb://tarot-service
-          predicates:
-            - Path=/api/v0.0.1/cards/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: tarot-service
-        - id: tarot-service-layouts
-          uri: lb://tarot-service
-          predicates:
-            - Path=/api/v0.0.1/layout-types/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: tarot-service
-        - id: divination-service
-          uri: lb://divination-service
-          predicates:
-            - Path=/api/v0.0.1/spreads/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: divination-service
-        - id: notification-service-ws
-          uri: lb:ws://notification-service
-          predicates:
-            - Path=/api/v0.0.1/notifications/ws
-        - id: notification-service
-          uri: lb://notification-service
-          predicates:
-            - Path=/api/v0.0.1/notifications/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: notification-service
+      server:
+        webflux:
+          routes:
+            - id: user-service-auth
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v0.0.1/auth/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: user-service
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v0.0.1/users/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: user-service
+            - id: tarot-service-cards
+              uri: lb://tarot-service
+              predicates:
+                - Path=/api/v0.0.1/cards/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: tarot-service
+            - id: tarot-service-layouts
+              uri: lb://tarot-service
+              predicates:
+                - Path=/api/v0.0.1/layout-types/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: tarot-service
+            - id: divination-service
+              uri: lb://divination-service
+              predicates:
+                - Path=/api/v0.0.1/spreads/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: divination-service
+            - id: notification-service-ws
+              uri: lb:ws://notification-service
+              predicates:
+                - Path=/api/v0.0.1/notifications/ws
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/v0.0.1/notifications/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: notification-service
 
 eureka:
   client:
