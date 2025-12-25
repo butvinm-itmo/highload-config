@@ -71,6 +71,14 @@ spring:
                 - name: CircuitBreaker
                   args:
                     name: notification-service
+            - id: file-storage-service
+              uri: lb://file-storage-service
+              predicates:
+                - Path=/api/v0.0.1/files/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: file-storage-service
 
 eureka:
   client:
@@ -107,6 +115,8 @@ resilience4j:
         baseConfig: default
       notification-service:
         baseConfig: default
+      file-storage-service:
+        baseConfig: default
 
   timelimiter:
     configs:
@@ -122,6 +132,8 @@ resilience4j:
         baseConfig: default
       notification-service:
         baseConfig: default
+      file-storage-service:
+        timeoutDuration: 30s
 
 management:
   endpoints:
