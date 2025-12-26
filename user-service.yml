@@ -1,6 +1,11 @@
 server:
   port: 8081
 
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:changeThisToAVeryLongSecretKeyForProductionUseAtLeast256BitsLong!!}
+  expiration: 86400000
+
 spring:
   flyway:
     table: flyway_schema_history_user
