@@ -1,6 +1,16 @@
 server:
   port: 8080
 
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:changeThisToAVeryLongSecretKeyForProductionUseAtLeast256BitsLong!!}
+
+# Security Configuration
+security:
+  public-paths:
+    - /api/v0.0.1/auth/login
+    - /actuator/health
+
 spring:
   cloud:
     compatibility-verifier:
