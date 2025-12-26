@@ -39,6 +39,14 @@ spring:
             - name: CircuitBreaker
               args:
                 name: divination-service
+        - id: divination-service-internal
+          uri: lb://divination-service
+          predicates:
+            - Path=/api/v0.0.1/internal/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: divination-service
 
 eureka:
   client:
