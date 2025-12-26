@@ -4,7 +4,7 @@ server:
 # JWT Configuration
 jwt:
   secret: ${JWT_SECRET:changeThisToAVeryLongSecretKeyForProductionUseAtLeast256BitsLong!!}
-  expiration: 86400000
+  expiration-hours: 24
 
 spring:
   flyway:
