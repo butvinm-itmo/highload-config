@@ -7,6 +7,14 @@ spring:
       enabled: false
     gateway:
       routes:
+        - id: user-service-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v0.0.1/auth/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: user-service
         - id: user-service
           uri: lb://user-service
           predicates:
