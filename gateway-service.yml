@@ -83,6 +83,7 @@ spring:
 # Centralized Swagger UI Configuration
 springdoc:
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
     urls:
       - name: User Service
@@ -91,8 +92,8 @@ springdoc:
         url: /v3/api-docs/tarot-service
       - name: Divination Service
         url: /v3/api-docs/divination-service
-    config-url: /v3/api-docs/swagger-config
-    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
 
 eureka:
   client:
