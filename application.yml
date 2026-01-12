@@ -19,11 +19,11 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
 
+server:
+  forward-headers-strategy: framework
+
 springdoc:
   api-docs:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
-  servers:
-    - url: http://localhost:8080
-      description: API Gateway
