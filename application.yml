@@ -24,3 +24,6 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+  servers:
+    - url: ""
+      description: "Use relative URLs (via API Gateway)"
