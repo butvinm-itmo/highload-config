@@ -1,6 +1,11 @@
 server:
   port: 8083
 
+springdoc:
+  servers:
+    - url: http://localhost:8080
+      description: API Gateway
+
 spring:
   cloud:
     compatibility-verifier:
