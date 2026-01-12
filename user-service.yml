@@ -10,7 +10,7 @@ spring:
         enabled: true
       client:
         config:
-          divination-service-internal:
+          divination-service:
             connectTimeout: 2000
             readTimeout: 5000
 
@@ -18,7 +18,7 @@ spring:
 resilience4j:
   circuitbreaker:
     instances:
-      divination-service-internal:
+      divination-service:
         registerHealthIndicator: true
         slidingWindowSize: 10
         minimumNumberOfCalls: 5
@@ -27,7 +27,7 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 3
   retry:
     instances:
-      divination-service-internal:
+      divination-service:
         maxAttempts: 3
         waitDuration: 500ms
         retryExceptions:
@@ -36,7 +36,7 @@ resilience4j:
           - feign.FeignException$GatewayTimeout
   timelimiter:
     instances:
-      divination-service-internal:
+      divination-service:
         timeoutDuration: 5s
 
 # JWT Configuration
