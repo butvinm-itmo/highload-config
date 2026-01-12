@@ -27,3 +27,8 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+  servers:
+    - url: http://localhost:8080
+      description: API Gateway
+    - url: http://localhost:${server.port}
+      description: Direct Access
