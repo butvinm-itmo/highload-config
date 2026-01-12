@@ -4,6 +4,40 @@ server:
 spring:
   flyway:
     table: flyway_schema_history_user
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          divination-service-internal:
+            connectTimeout: 2000
+            readTimeout: 5000
+
+# Resilience4j configuration for divination-service cleanup calls
+resilience4j:
+  circuitbreaker:
+    instances:
+      divination-service-internal:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+  retry:
+    instances:
+      divination-service-internal:
+        maxAttempts: 3
+        waitDuration: 500ms
+        retryExceptions:
+          - java.io.IOException
+          - feign.FeignException$ServiceUnavailable
+          - feign.FeignException$GatewayTimeout
+  timelimiter:
+    instances:
+      divination-service-internal:
+        timeoutDuration: 5s
 
 # JWT Configuration
 jwt:
