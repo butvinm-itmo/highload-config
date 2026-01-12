@@ -10,6 +10,9 @@ security:
   public-paths:
     - /api/v0.0.1/auth/login
     - /actuator/health
+    - /swagger-ui
+    - /v3/api-docs
+    - /webjars/swagger-ui
 
 spring:
   cloud:
@@ -57,6 +60,39 @@ spring:
             - name: CircuitBreaker
               args:
                 name: divination-service
+        # OpenAPI documentation routes
+        - id: openapi-user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/v3/api-docs/user-service
+          filters:
+            - RewritePath=/v3/api-docs/user-service, /api-docs
+        - id: openapi-tarot-service
+          uri: lb://tarot-service
+          predicates:
+            - Path=/v3/api-docs/tarot-service
+          filters:
+            - RewritePath=/v3/api-docs/tarot-service, /api-docs
+        - id: openapi-divination-service
+          uri: lb://divination-service
+          predicates:
+            - Path=/v3/api-docs/divination-service
+          filters:
+            - RewritePath=/v3/api-docs/divination-service, /api-docs
+
+# Centralized Swagger UI Configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: User Service
+        url: /v3/api-docs/user-service
+      - name: Tarot Service
+        url: /v3/api-docs/tarot-service
+      - name: Divination Service
+        url: /v3/api-docs/divination-service
+  api-docs:
+    enabled: false
 
 eureka:
   client:
