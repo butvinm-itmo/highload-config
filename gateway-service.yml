@@ -91,8 +91,8 @@ springdoc:
         url: /v3/api-docs/tarot-service
       - name: Divination Service
         url: /v3/api-docs/divination-service
-  api-docs:
-    enabled: false
+    config-url: /v3/api-docs/swagger-config
+    disable-swagger-default-url: true
 
 eureka:
   client:
