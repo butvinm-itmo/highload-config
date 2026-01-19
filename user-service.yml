@@ -4,17 +4,8 @@ server:
 spring:
   flyway:
     table: flyway_schema_history_user
-  cloud:
-    openfeign:
-      circuitbreaker:
-        enabled: true
-      client:
-        config:
-          divination-service:
-            connectTimeout: 2000
-            readTimeout: 5000
 
-# Resilience4j configuration for divination-service cleanup calls
+# Resilience4j configuration for divination-service cleanup calls (WebClient)
 resilience4j:
   circuitbreaker:
     instances:
@@ -25,6 +16,16 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 3
+        recordExceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
+          - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
+          - org.springframework.web.reactive.function.client.WebClientResponseException$BadGateway
+          - org.springframework.web.reactive.function.client.WebClientResponseException$GatewayTimeout
+        ignoreExceptions:
+          - org.springframework.web.reactive.function.client.WebClientResponseException$NotFound
+          - org.springframework.web.reactive.function.client.WebClientResponseException$BadRequest
   retry:
     instances:
       divination-service:
@@ -32,8 +33,8 @@ resilience4j:
         waitDuration: 500ms
         retryExceptions:
           - java.io.IOException
-          - feign.FeignException$ServiceUnavailable
-          - feign.FeignException$GatewayTimeout
+          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
+          - org.springframework.web.reactive.function.client.WebClientResponseException$GatewayTimeout
   timelimiter:
     instances:
       divination-service:
