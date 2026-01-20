@@ -1,6 +1,14 @@
 server:
   port: 8083
 
+logging:
+  level:
+    root: INFO
+    com.github.butvinmitmo: DEBUG
+    org.springframework.web: DEBUG
+    feign: DEBUG
+    io.github.resilience4j: DEBUG
+
 file:
   max-size-bytes: 2097152
   storage-service-public-url: ${FILE_STORAGE_PUBLIC_URL:http://localhost:8080}

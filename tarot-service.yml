@@ -1,6 +1,12 @@
 server:
   port: 8082
 
+logging:
+  level:
+    root: INFO
+    com.github.butvinmitmo: DEBUG
+    org.springframework.web: DEBUG
+
 spring:
   flyway:
     table: flyway_schema_history_tarot

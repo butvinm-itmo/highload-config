@@ -1,6 +1,14 @@
 server:
   port: 8081
 
+logging:
+  level:
+    root: INFO
+    com.github.butvinmitmo: DEBUG
+    org.springframework.web: DEBUG
+    feign: DEBUG
+    io.github.resilience4j: DEBUG
+
 spring:
   flyway:
     table: flyway_schema_history_user
