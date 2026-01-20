@@ -19,8 +19,12 @@ spring:
       enabled: false
   flyway:
     table: flyway_schema_history_divination
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+# Kafka topic configuration
+kafka:
+  topics:
+    spreads-events: spreads-events
+    interpretations-events: interpretations-events
 
 eureka:
   client:

@@ -74,3 +74,8 @@ eureka:
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
     instance-id: ${spring.application.name}:${random.value}
+
+# Kafka topic configuration
+kafka:
+  topics:
+    users-events: users-events
