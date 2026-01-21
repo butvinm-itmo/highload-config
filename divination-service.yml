@@ -25,6 +25,7 @@ kafka:
   topics:
     spreads-events: spreads-events
     interpretations-events: interpretations-events
+    users-events: users-events
 
 eureka:
   client:
