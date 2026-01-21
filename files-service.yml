@@ -21,7 +21,6 @@ spring:
 
 minio:
   endpoint: http://${MINIO_HOST:minio}:${MINIO_PORT:9000}
-  public-endpoint: ${MINIO_PUBLIC_ENDPOINT:http://localhost:9000}
   access-key: ${MINIO_ACCESS_KEY:minioadmin}
   secret-key: ${MINIO_SECRET_KEY:minioadmin}
   bucket: interpretation-attachments
