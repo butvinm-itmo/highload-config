@@ -1,6 +1,14 @@
 server:
   port: 8083
 
+logging:
+  level:
+    root: INFO
+    com.github.butvinmitmo: DEBUG
+    org.springframework.web: DEBUG
+    feign: DEBUG
+    io.github.resilience4j: DEBUG
+
 file:
   max-size-bytes: 2097152
   storage-service-public-url: ${FILE_STORAGE_PUBLIC_URL:http://localhost:8080}
@@ -9,26 +17,19 @@ spring:
   cloud:
     compatibility-verifier:
       enabled: false
-    openfeign:
-      circuitbreaker:
-        enabled: true
-        group:
-          enabled: true
   flyway:
     table: flyway_schema_history_divination
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:tarot_db}
-    user: ${DB_USER:tarot_user}
-    password: ${DB_PASSWORD:password}
-  r2dbc:
-    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:tarot_db}
-    username: ${DB_USER:tarot_user}
-    password: ${DB_PASSWORD:password}
-    pool:
-      initial-size: 5
-      max-size: 20
-      max-idle-time: 30m
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: divination-service
+
+# Kafka topic configuration
+kafka:
+  topics:
+    spreads-events: spreads-events
+    interpretations-events: interpretations-events
+    users-events: users-events
 
 eureka:
   client:
@@ -44,6 +45,7 @@ eureka:
     lease-expiration-duration-in-seconds: 30
     instance-id: ${spring.application.name}:${random.value}
 
+# Resilience4j configuration for WebClient calls
 resilience4j:
   circuitbreaker:
     configs:
@@ -59,13 +61,13 @@ resilience4j:
         recordExceptions:
           - java.io.IOException
           - java.util.concurrent.TimeoutException
-          - feign.FeignException.ServiceUnavailable
-          - feign.FeignException.InternalServerError
-          - feign.FeignException.BadGateway
-          - feign.FeignException.GatewayTimeout
+          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
+          - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
+          - org.springframework.web.reactive.function.client.WebClientResponseException$BadGateway
+          - org.springframework.web.reactive.function.client.WebClientResponseException$GatewayTimeout
         ignoreExceptions:
-          - feign.FeignException.NotFound
-          - feign.FeignException.BadRequest
+          - org.springframework.web.reactive.function.client.WebClientResponseException$NotFound
+          - org.springframework.web.reactive.function.client.WebClientResponseException$BadRequest
     instances:
       user-service:
         baseConfig: default
@@ -84,12 +86,12 @@ resilience4j:
         retryExceptions:
           - java.io.IOException
           - java.util.concurrent.TimeoutException
-          - feign.FeignException.ServiceUnavailable
-          - feign.FeignException.InternalServerError
+          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
+          - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
         ignoreExceptions:
-          - feign.FeignException.NotFound
-          - feign.FeignException.BadRequest
-          - feign.FeignException.Forbidden
+          - org.springframework.web.reactive.function.client.WebClientResponseException$NotFound
+          - org.springframework.web.reactive.function.client.WebClientResponseException$BadRequest
+          - org.springframework.web.reactive.function.client.WebClientResponseException$Forbidden
     instances:
       user-service:
         baseConfig: default
@@ -110,23 +112,6 @@ resilience4j:
         baseConfig: default
       file-storage-service:
         timeoutDuration: 30s
-
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 2000
-        readTimeout: 5000
-        loggerLevel: BASIC
-      user-service:
-        connectTimeout: 2000
-        readTimeout: 3000
-      tarot-service:
-        connectTimeout: 2000
-        readTimeout: 3000
-      file-storage-service:
-        connectTimeout: 5000
-        readTimeout: 30000
 
 management:
   endpoints:
