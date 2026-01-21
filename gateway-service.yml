@@ -68,6 +68,18 @@ spring:
             - name: CircuitBreaker
               args:
                 name: divination-service
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v0.0.1/notifications/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: notification-service
+        - id: notification-service-websocket
+          uri: lb://notification-service
+          predicates:
+            - Path=/ws/notifications/**
         # OpenAPI documentation routes
         - id: openapi-user-service
           uri: lb://user-service
@@ -87,6 +99,12 @@ spring:
             - Path=/v3/api-docs/divination-service
           filters:
             - RewritePath=/v3/api-docs/divination-service, /api-docs
+        - id: openapi-notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/v3/api-docs/notification-service
+          filters:
+            - RewritePath=/v3/api-docs/notification-service, /api-docs
 
 # Centralized Swagger UI Configuration
 springdoc:
@@ -100,6 +118,8 @@ springdoc:
         url: /v3/api-docs/tarot-service
       - name: Divination Service
         url: /v3/api-docs/divination-service
+      - name: Notification Service
+        url: /v3/api-docs/notification-service
   api-docs:
     path: /v3/api-docs
 
