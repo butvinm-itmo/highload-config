@@ -57,3 +57,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+# Kafka topic configuration
+kafka:
+  topics:
+    files-events: files-events
