@@ -80,6 +80,14 @@ spring:
           uri: lb://notification-service
           predicates:
             - Path=/ws/notifications/**
+        - id: files-service
+          uri: lb://files-service
+          predicates:
+            - Path=/api/v0.0.1/files/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: files-service
         # OpenAPI documentation routes
         - id: openapi-user-service
           uri: lb://user-service
@@ -105,6 +113,12 @@ spring:
             - Path=/v3/api-docs/notification-service
           filters:
             - RewritePath=/v3/api-docs/notification-service, /api-docs
+        - id: openapi-files-service
+          uri: lb://files-service
+          predicates:
+            - Path=/v3/api-docs/files-service
+          filters:
+            - RewritePath=/v3/api-docs/files-service, /api-docs
 
 # Centralized Swagger UI Configuration
 springdoc:
@@ -120,6 +134,8 @@ springdoc:
         url: /v3/api-docs/divination-service
       - name: Notification Service
         url: /v3/api-docs/notification-service
+      - name: Files Service
+        url: /v3/api-docs/files-service
   api-docs:
     path: /v3/api-docs
 
@@ -160,6 +176,8 @@ resilience4j:
         baseConfig: default
       file-storage-service:
         baseConfig: default
+      files-service:
+        baseConfig: default
 
   timelimiter:
     configs:
@@ -176,6 +194,8 @@ resilience4j:
       notification-service:
         baseConfig: default
       file-storage-service:
+        timeoutDuration: 30s
+      files-service:
         timeoutDuration: 30s
 
 management:
